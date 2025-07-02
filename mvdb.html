@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie & TV Database</title>
+  <link rel="stylesheet" href="mvdb.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>🎬 Movie Database</h1>
+      <div class="theme-dropdown" id="themeDropdown">
+        <button class="theme-toggle" id="themeToggle" title="Change Theme">🌞</button>
+        <div class="theme-list" id="themeList">
+          <button data-theme="dark">Dark</button>
+          <button data-theme="light">Light</button>
+          <button data-theme="sakura">Sakura</button>
+          <button data-theme="arcade">Arcade</button>
+          <button data-theme="sunset">Sunset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for a movie, TV show, or actor..." />
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <div class="nav-bar">
+      <button id="homeBtn"><i class="fas fa-home"></i> Home</button>
+      <button id="moviesBtn"><i class="fas fa-film"></i> Movies</button>
+      <button id="seriesBtn"><i class="fas fa-tv"></i> Series</button>
+      <button id="peopleBtn"><i class="fas fa-users"></i> People</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="message"></div>
+
+    <h2 id="categoryHeading" style="display: none;"></h2>
+    <div id="contentContainer" class="content-grid"></div>
+
+    <h2 id="actorHeading" style="display: none;">
+      Movies & TV Shows for <span id="actorName"></span>
+    </h2>
+    <div id="actorContent" class="actor-grid"></div>
+
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <img src="https://cdn-icons-png.flaticon.com/512/2748/2748558.png" alt="No content icon" />
+      <p>No notable credits found for this actor… yet 🎭</p>
+    </div>
+  </main>
+
+  <div id="trailerModal" class="trailer-modal" style="display: none;">
+    <div class="trailer-content">
+      <span id="closeTrailer" class="close-trailer">&times;</span>
+      <iframe
+        id="trailerIframe"
+        src=""
+        frameborder="0"
+        allowfullscreen
+        allow="autoplay; encrypted-media"
+></iframe>
+    </div>
+  </div>
+
+  <script type="module" src="mvdb.js"></script>
+
+  <script>
+    const emojiMap = {
+      dark: '🌙',
+      light: '🌞',
+      sakura: '🌸',
+      arcade: '🕹️',
+      sunset: '🌅'
+};
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeDropdown = document.getElementById('themeDropdown');
+const themeList = document.getElementById('themeList');
+
+    themeToggle.addEventListener('click', () => {
+      themeDropdown.classList.toggle('open');
+});
+
+    document.querySelectorAll('#themeList button').forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedTheme = button.getAttribute('data-theme');
+        document.body.className = '';
+        document.body.classList.add(`${selectedTheme}-mode`);
+        localStorage.setItem('theme', selectedTheme);
+        themeToggle.textContent = emojiMap[selectedTheme];
+        themeDropdown.classList.remove('open');
+});
+});
+
+    // Load saved theme
+    const saved = localStorage.getItem('theme');
+    if (saved) {
+      document.body.classList.add(`${saved}-mode`);
+      themeToggle.textContent = emojiMap[saved];
+}
+  </script>
+</body>
+</html>
